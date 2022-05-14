@@ -3,18 +3,19 @@
  * @author Kevin Koos
  */
 
-var unit_length = 10;
-var box_size = 5;
+var unit_length = 5;
+var box_size = 3;
 var scale_factor = 3
 
-var index = 0;
+var index = 1;
 //var index_max = window.innerWidth * window.innerHeight - 1;
 var index_max = 1000;
 var cx = 0, cy = 0;  // current pos
 var dx = unit_length, dy = 0;  // direction vector
 var segment_length = 1;
 var seg_step = 0;
-
+var skip_frame = 0;
+var skip_step = 0;
 
 /**
  * Initializes the canvas and starts the drawing
@@ -78,9 +79,20 @@ $(window).on('load', function () {
     
     index++;
   
-    if (index < index_max) {
-      window.requestAnimationFrame(draw);
+    //quicken animation
+    if (skip_frame == skip_step) {
+      skip_step = 0;
+      if (index < index_max) {
+        window.requestAnimationFrame(draw);
+      }
+    } else {
+      skip_step++;
+      draw();
     }
+  }
+
+  function is_prime(){
+
   }
 
 });
