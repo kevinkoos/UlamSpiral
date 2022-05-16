@@ -23,114 +23,127 @@ var inc_limit = 2;
 /**
  * Initializes the canvas and starts the drawing
  */
-$(window).on('load', function () {
-  var canvas = document.getElementById('window');
+var canvas = document.getElementById('window');
 
-  if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+if (canvas.getContext) {
+  var ctx = canvas.getContext('2d');
+
+  // initialize the canvas
+  init_canvas(ctx);
+
+  // initalize the ui
+  init_ui(ctx);
+
+  // start drawing
+  draw(ctx);
+}
+
+
   
-    // set width and height to window size
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
+function init_canvas() {
+  // set width and height to window size
+  ctx.canvas.width = window.innerWidth;
+  ctx.canvas.height = window.innerHeight;
 
-    // translate origin to center
-    ctx.translate(window.innerWidth / 2, window.innerHeight / 2);
+  // translate origin to center
+  ctx.translate(window.innerWidth / 2, window.innerHeight / 2);
 
-    // scale
-    ctx.scale(scale_factor, -scale_factor)
+  // scale
+  ctx.scale(scale_factor, -scale_factor);
 
-    // center box and 2,3,5 boxes
-    ctx.save();
-    ctx.fillStyle = 'rgb(255, 0, 0)';
-    ctx.fillRect(0, 0, box_size, box_size);
-    ctx.restore();
-    ctx.fillRect(unit_length, 0, box_size, box_size);
-    ctx.fillRect(unit_length, unit_length, box_size, box_size);
-    ctx.fillRect(cx, cy, box_size, box_size);
+  // center box and 2,3,5 boxes
+  ctx.save();
+  ctx.fillStyle = 'rgb(255, 0, 0)';
+  ctx.fillRect(0, 0, box_size, box_size);
+  ctx.restore();
+  ctx.fillRect(unit_length, 0, box_size, box_size);
+  ctx.fillRect(unit_length, unit_length, box_size, box_size);
+  ctx.fillRect(cx, cy, box_size, box_size);
+}
 
-    draw(ctx);
-  }
+function init_ui() {
+  $('#ui-window').draggable();
+}
 
-  /**
-   * Main draw function for the canvas
-   * @param context: 
-   * @returns none
-   */
-  function draw() {
-  
-    while (true) {
+/**
+ * Main draw function for the canvas
+ * @param context: 
+ * @returns none
+ */
+function draw() {
 
-      for (var i = 0; i < inc_limit; i++){
-        //update position
-        cx += dx;
-        cy += dy;
-        seg_step++;
-          
-        //corner
-        if (seg_step == segment_length) {
-          
-          //increase side length size
-          if (dx == 0) {
-            segment_length++;
-          }
-      
-          //turn
-          var temp = dx;
-          dx = -dy;
-          dy = temp;
-      
-          //reset segment index
-          seg_step = 0;
-        }
+  while (true) {
+
+    for (var i = 0; i < inc_limit; i++){
+      //update position
+      cx += dx;
+      cy += dy;
+      seg_step++;
         
-        //increment num
-        index++;
+      //corner
+      if (seg_step == segment_length) {
+        
+        //increase side length size
+        if (dx == 0) {
+          segment_length++;
+        }
+    
+        //turn
+        var temp = dx;
+        dx = -dy;
+        dy = temp;
+    
+        //reset segment index
+        seg_step = 0;
       }
-
-      if (inc_limit == 2) {
-        inc_limit = 4;
-      } else {
-        inc_limit = 2;
-      }
-
-      //check and draw
-      if (is_prime(index)) {
-        ctx.fillRect(cx, cy, box_size, box_size);
-        break;
-      }
+      
+      //increment num
+      index++;
     }
-  
-    //quicken animation
-    if (skip_frame == skip_step) {
-      skip_step = 0;
-      if (index < index_max) {
-        window.requestAnimationFrame(draw);
-      }
+
+    if (inc_limit == 2) {
+      inc_limit = 4;
     } else {
-      skip_step++;
-      draw();
+      inc_limit = 2;
+    }
+
+    //check and draw
+    if (is_prime(index)) {
+      ctx.fillRect(cx, cy, box_size, box_size);
+      break;
     }
   }
 
-  /**
-   * Checks primality of given number.
-   */
-  function is_prime(num){
-
-    if (primes.includes(num)) { 
-      return true; 
+  //quicken animation
+  if (skip_frame == skip_step) {
+    skip_step = 0;
+    if (index < index_max) {
+      window.requestAnimationFrame(draw);
     }
+  } else {
+    skip_step++;
+    draw();
+  }
+}
 
-    for (var i = 0; i < primes.length; i++) {
+/**
+ * Checks primality of given number.
+ */
+function is_prime(num){
 
-      if (num % primes[i] == 0) {
-        return false;
-      }
-
-    }
-
-    primes.push(num);
-    return true;
+  if (primes.includes(num)) { 
+    return true; 
   }
 
-});
+  for (var i = 0; i < primes.length; i++) {
+
+    if (num % primes[i] == 0) {
+      return false;
+    }
+
+  }
+
+  primes.push(num);
+  return true;
+}
+
