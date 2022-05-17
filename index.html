@@ -14,20 +14,37 @@
   <link rel="stylesheet" href="jquery-ui.min.css">
 
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer></script> -->
-  <script src="jquery-3.6.0.min.js" defer></script>
+  <script src="script/jquery-3.6.0.min.js" defer></script>
   
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script> -->
-  <script src="jquery-ui.js" defer></script>
+  <script src="script/jquery-ui.js" defer></script>
 
-  <script src="main.js" defer></script>
+  <!-- <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js" ></script> -->
+  <script src="script/jquery.ddslick.min.js" defer></script>
+
+  <!-- <script src="https://unpkg.com/@panzoom/panzoom@4.4.4/dist/panzoom.min.js"></script> -->
+  <script src="script/panzoom.js"></script>
+
+  <script src="script/main.js" defer></script>
 </head>
 
 <body>
 
   <div id="container">
     
-    <div id="ui-window">
-  
+    <div id="ui-window" class="widget">
+      
+      <div id="spiral-dropdown"></div>
+
+      <br>
+
+      <label for="zoom-slider">Zoom</label>
+      <input id="zoom-slider" type="range" min="0.1" max="1" step="0.3" value="1">
+
+      <br>
+
+
+
     </div>
   
     <canvas id="window" width="300" height="150">

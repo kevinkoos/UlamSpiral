@@ -19,11 +19,36 @@ var seg_step = 0;
 var skip_frame = 0;
 var skip_step = 0;
 var inc_limit = 2;
+var spiral_type = 'desc';
+
+var ddData = [
+  {
+    text: "Discrete",
+    value: 0,
+    selected: true,
+    description: "Discrete spiral on a grid.",
+    imageSrc: "discrete.svg"
+  },
+  {
+    text: "Archimedean",
+    value: 1,
+    selected: false,
+    description: "Archimedean spiral.",
+    imageSrc: "archimedean.svg"
+  }
+];
 
 /**
  * Initializes the canvas and starts the drawing
  */
-var canvas = document.getElementById('window');
+const canvas = document.getElementById('window');
+const panzoom = Panzoom(canvas, {
+  maxScale: 1,
+  minScale: 0.1,
+  step: 0.3,
+  cursor: 'default',
+  roundPixels: true
+});
 
 if (canvas.getContext) {
   var ctx = canvas.getContext('2d');
@@ -37,8 +62,6 @@ if (canvas.getContext) {
   // start drawing
   draw(ctx);
 }
-
-
   
 function init_canvas() {
   // set width and height to window size
@@ -63,7 +86,44 @@ function init_canvas() {
 
 function init_ui() {
   $('#ui-window').draggable();
+
+  // spiral type dropdown menu
+  $('#spiral-dropdown').ddslick({
+    data: ddData,
+    width: 280,
+    imagePosition: "right",
+    selectText: "Select your spiral type.",
+    onSelected: function (data) {
+        console.log(data);
+    }
+  });
+
+  // zoom slider binding
+  $('#zoom-slider').on('input', (event) => {
+    panzoom.zoom(event.target.valueAsNumber);
+  });
+
+  // mousewheel zoom event
+  $(window).on('mousewheel', (event) => {
+    var zoom = $('#zoom-slider')[0];
+    console.log('step!');
+    if (event.originalEvent.wheelDelta/120 > 0) {
+      zoom.stepUp();
+    } else {
+      zoom.stepDown();
+    }
+    panzoom.zoom(zoom.value);
+  });
+
+  // resize event
+  $(window).on('resize', (event) => {
+    var pan_x = (window.innerWidth - ctx.canvas.width) / 2;
+    var pan_y = (window.innerHeight - ctx.canvas.height) / 2;
+    panzoom.pan(pan_x, pan_y);
+  });
 }
+
+
 
 /**
  * Main draw function for the canvas
@@ -71,7 +131,7 @@ function init_ui() {
  * @returns none
  */
 function draw() {
-
+  
   while (true) {
 
     for (var i = 0; i < inc_limit; i++){
@@ -79,7 +139,8 @@ function draw() {
       cx += dx;
       cy += dy;
       seg_step++;
-        
+      
+      //TODO: turn this into a function for turn generalization
       //corner
       if (seg_step == segment_length) {
         

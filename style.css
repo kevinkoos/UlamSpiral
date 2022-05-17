@@ -1,13 +1,20 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
 body {
     background-color: #696969;
+    position: absolute;
     margin: none;
-    padding: none
+    padding: none;
+    overflow: hidden;
 }
 
 canvas {
-    margin: none;
-    padding: none;
-    position: absolute;
+    margin: 0 auto;
+    position: relative;
+    display: block;
 }
 
 #container {
@@ -17,10 +24,21 @@ canvas {
 #ui-window {
     background-color: rgba(0, 0, 0, 0.4);
     position: absolute;
-    padding: 10px;
+    padding: 20px;
     width: 300px;
     height: 400px;
     top: 20px;
     right: 20px;
     z-index: 1;
+    font-size: small;
+}
+
+#ui-window > * {
+    margin: 0 auto;
+    display: block;
+}
+
+#zoom-slider {
+    width: 280px;
+    direction: rtl;
 }
