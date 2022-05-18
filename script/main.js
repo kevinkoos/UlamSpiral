@@ -16,10 +16,7 @@ var cx = -unit_length, cy = unit_length;  // current pos
 var dx = 0, dy = -unit_length;  // direction vector
 var segment_length = 2;
 var seg_step = 0;
-var skip_frame = 0;
-var skip_step = 0;
 var inc_limit = 2;
-var spiral_type = 'desc';
 
 var ddData = [
   {
@@ -131,8 +128,8 @@ function init_ui() {
  * @returns none
  */
 function draw() {
-  
-  while (true) {
+
+  while (index < index_max) {
 
     for (var i = 0; i < inc_limit; i++){
       //update position
@@ -175,16 +172,7 @@ function draw() {
     }
   }
 
-  //quicken animation
-  if (skip_frame == skip_step) {
-    skip_step = 0;
-    if (index < index_max) {
-      window.requestAnimationFrame(draw);
-    }
-  } else {
-    skip_step++;
-    draw();
-  }
+  window.requestAnimationFrame(draw);
 }
 
 /**
