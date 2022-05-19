@@ -2,23 +2,10 @@
  * @fileoverview Main file for controlling the ulam spiral visualization
  * @author Kevin Koos
  */
+let primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
 
-var unit_length = 5;
-var box_size = 3;
-var scale_factor = 3
-
-var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
-
-var index = 5; // start index
-//var index_max = window.innerWidth * window.innerHeight - 1;
-var index_max = 10000;
-var cx = -unit_length, cy = unit_length;  // current pos
-var dx = 0, dy = -unit_length;  // direction vector
-var segment_length = 2;
-var seg_step = 0;
-var inc_limit = 2;
-
-var ddData = [
+// data for dropdown menu
+let ddData = [
   {
     text: "Discrete",
     value: 0,
@@ -35,52 +22,72 @@ var ddData = [
   }
 ];
 
-/**
- * Initializes the canvas and starts the drawing
- */
-const canvas = document.getElementById('window');
-const panzoom = Panzoom(canvas, {
-  maxScale: 1,
-  minScale: 0.1,
-  step: 0.3,
-  cursor: 'default',
-  roundPixels: true
+let scale_factor = 1;
+
+// start the app
+let app = new PIXI.Application({ width: innerWidth, height: innerHeight,
+          resizeTo: window        
+});
+let renderer = app.renderer;
+$('#container')[0].appendChild(app.view);
+
+// circle template to generate texture
+let gr = new PIXI.Graphics();  
+gr.beginFill(0xFFFFFF);
+gr.lineStyle(0);
+gr.drawCircle(0, 0, 25);
+gr.scale.set(0.4 * scale_factor);
+gr.endFill();
+
+// generate texture from template graphics
+let texture = renderer.generateTexture(gr);
+texture.defaultAnchor.set(0.5); // center
+
+// container
+let spiral = new PIXI.Container();
+spiral.x = innerWidth / 2;
+spiral.y = innerHeight / 2;
+
+// center sample circle
+let circle = new PIXI.Sprite(texture);
+
+spiral.addChild(circle);
+app.stage.addChild(spiral);
+
+
+
+let elapsed = 0.0;
+
+// animation ticker
+app.ticker.add((delta) => {
+  elapsed += delta;
+  
+  // center container
+  spiral.x = innerWidth/2;
+  spiral.y = innerHeight/2;
+
 });
 
-if (canvas.getContext) {
-  var ctx = canvas.getContext('2d');
 
-  // initialize the canvas
-  init_canvas(ctx);
 
-  // initalize the ui
-  init_ui(ctx);
 
-  // start drawing
-  draw(ctx);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+init_ui();
   
-function init_canvas() {
-  // set width and height to window size
-  ctx.canvas.width = window.innerWidth;
-  ctx.canvas.height = window.innerHeight;
-
-  // translate origin to center
-  ctx.translate(window.innerWidth / 2, window.innerHeight / 2);
-
-  // scale
-  ctx.scale(scale_factor, -scale_factor);
-
-  // center box and 2,3,5 boxes
-  ctx.save();
-  ctx.fillStyle = 'rgb(255, 0, 0)';
-  ctx.fillRect(0, 0, box_size, box_size);
-  ctx.restore();
-  ctx.fillRect(unit_length, 0, box_size, box_size);
-  ctx.fillRect(unit_length, unit_length, box_size, box_size);
-  ctx.fillRect(cx, cy, box_size, box_size);
-}
-
 function init_ui() {
   $('#ui-window').draggable();
 
@@ -95,84 +102,6 @@ function init_ui() {
     }
   });
 
-  // zoom slider binding
-  $('#zoom-slider').on('input', (event) => {
-    panzoom.zoom(event.target.valueAsNumber);
-  });
-
-  // mousewheel zoom event
-  $(window).on('mousewheel', (event) => {
-    var zoom = $('#zoom-slider')[0];
-    console.log('step!');
-    if (event.originalEvent.wheelDelta/120 > 0) {
-      zoom.stepUp();
-    } else {
-      zoom.stepDown();
-    }
-    panzoom.zoom(zoom.value);
-  });
-
-  // resize event
-  $(window).on('resize', (event) => {
-    var pan_x = (window.innerWidth - ctx.canvas.width) / 2;
-    var pan_y = (window.innerHeight - ctx.canvas.height) / 2;
-    panzoom.pan(pan_x, pan_y);
-  });
-}
-
-
-
-/**
- * Main draw function for the canvas
- * @param context: 
- * @returns none
- */
-function draw() {
-
-  while (index < index_max) {
-
-    for (var i = 0; i < inc_limit; i++){
-      //update position
-      cx += dx;
-      cy += dy;
-      seg_step++;
-      
-      //TODO: turn this into a function for turn generalization
-      //corner
-      if (seg_step == segment_length) {
-        
-        //increase side length size
-        if (dx == 0) {
-          segment_length++;
-        }
-    
-        //turn
-        var temp = dx;
-        dx = -dy;
-        dy = temp;
-    
-        //reset segment index
-        seg_step = 0;
-      }
-      
-      //increment num
-      index++;
-    }
-
-    if (inc_limit == 2) {
-      inc_limit = 4;
-    } else {
-      inc_limit = 2;
-    }
-
-    //check and draw
-    if (is_prime(index)) {
-      ctx.fillRect(cx, cy, box_size, box_size);
-      break;
-    }
-  }
-
-  window.requestAnimationFrame(draw);
 }
 
 /**
