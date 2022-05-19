@@ -26,14 +26,16 @@ let ddData = [
 let unit_size = 10;
 let unit_scale = 0.2;
 let zoom_scale = 1;
+let zoom_step = 0.1;
 
 // start the app
-let app = new PIXI.Application({ width: innerWidth, height: innerHeight,
+let app = new PIXI.Application({ 
+  width: innerWidth, 
+  height: innerHeight,
   resizeTo: window        
 });
-let renderer = app.renderer;
 $('#container')[0].appendChild(app.view);
-init_ui();
+
 
 // circle template to generate texture
 let gr = new PIXI.Graphics();  
@@ -44,16 +46,20 @@ gr.scale.set(0.4 * unit_scale);
 gr.endFill();
 
 // generate texture from template graphics
-let texture = renderer.generateTexture(gr);
+let texture = app.renderer.generateTexture(gr);
 texture.defaultAnchor.set(0.5); // center
 
 // container
 let spiral = new PIXI.Container();
+spiral.pivot.set(0.5);
 spiral.x = innerWidth / 2;
 spiral.y = innerHeight / 2;
+spiral.interactive = true;
+spiral.interactiveChildren = false;
 
 // center sample circle
 let circle = new PIXI.Sprite(texture);
+circle.tint = 0x00ffff;
 
 spiral.addChild(circle);
 app.stage.addChild(spiral);
@@ -62,34 +68,38 @@ app.stage.addChild(spiral);
 let elapsed = 0.0;
 let index = 1;
 let index_max = 20000;
-let cx = 0, cy = 0;
-let dx = 1, dy = 0;
+
+let pos = { x: 0, y: 0 };
+let delta = { x: 1, y: 0 };
+
 let segment_limit = 1;
 let segment_step = 0;
 
-// animation ticker
-app.ticker.add((delta) => {
-  elapsed += delta;
-  
-  // center container
-  spiral.x = innerWidth/2;
-  spiral.y = innerHeight/2;
+let delay = 100;
+let timeout = false;
 
+// start the ui
+init_ui();
+
+// animation ticker
+app.ticker.add( (dt) => {
+  elapsed += dt;
+  
   while (index < index_max) {
 
-    cx += dx;
-    cy += dy;
+    pos.x += delta.x;
+    pos.y += delta.y;
     segment_step++;
 
     if (segment_step == segment_limit) {
 
-      if (dx == 0) {
+      if (delta.x == 0) {
         segment_limit++;
       }
 
-      var temp = dx;
-      dx = -dy;
-      dy = temp;
+      var temp = delta.x;
+      delta.x = -delta.y;
+      delta.y = temp;
 
       segment_step = 0;
     }
@@ -98,8 +108,8 @@ app.ticker.add((delta) => {
 
     if (is_prime(index)) {
       let prime_circle = new PIXI.Sprite(texture);
-      prime_circle.x = cx * unit_size;
-      prime_circle.y = cy * unit_size;
+      prime_circle.x = pos.x * unit_size;
+      prime_circle.y = pos.y * unit_size;
       spiral.addChild(prime_circle);
       break;
     }
@@ -138,6 +148,52 @@ function init_ui() {
     }
   });
 
+  // zoom slider and event
+  $('#zoom-slider').slider({
+    value: zoom_scale,
+    orientation: 'horizontal',
+    max: 2,
+    min: 0.1,
+    step: zoom_step,
+    range: 'min',
+    slide: (ev, ui) => {
+      spiral.scale.set(ui.value);
+      zoom_scale = ui.value;
+    }
+  });
+  
+
+  // debounce resize event controller
+  $(window).on('resize', (ev) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(resize, delay);
+  });
+
+  // zoom event handler
+  app.view.addEventListener('mousewheel', (ev) => {
+    if (ev.deltaY < 0) { 
+        zoom_scale += zoom_step;
+    }
+    else if (ev.deltaY > 0) { // scroll down
+      zoom_scale -= zoom_step;
+    }
+    spiral.scale.set(zoom_scale);
+    // update slider value
+    $('#zoom-slider').slider('value', zoom_scale);
+  });
+
+}
+
+/**
+ * resize event function
+ */
+function resize() {
+  // render at new size
+  app.renderer.resize(innerWidth, innerHeight);
+
+  // center spiral container
+  spiral.x = innerWidth/2;
+  spiral.y = innerHeight/2;
 }
 
 /**
