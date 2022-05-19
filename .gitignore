@@ -3,3 +3,4 @@ jsconfig.json
 jquery*
 .vscode
 pixi.js*
+images/*

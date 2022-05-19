@@ -22,21 +22,25 @@ let ddData = [
   }
 ];
 
-let scale_factor = 1;
+// constants
+let unit_size = 10;
+let unit_scale = 0.2;
+let zoom_scale = 1;
 
 // start the app
 let app = new PIXI.Application({ width: innerWidth, height: innerHeight,
-          resizeTo: window        
+  resizeTo: window        
 });
 let renderer = app.renderer;
 $('#container')[0].appendChild(app.view);
+init_ui();
 
 // circle template to generate texture
 let gr = new PIXI.Graphics();  
 gr.beginFill(0xFFFFFF);
 gr.lineStyle(0);
 gr.drawCircle(0, 0, 25);
-gr.scale.set(0.4 * scale_factor);
+gr.scale.set(0.4 * unit_scale);
 gr.endFill();
 
 // generate texture from template graphics
@@ -55,8 +59,13 @@ spiral.addChild(circle);
 app.stage.addChild(spiral);
 
 
-
 let elapsed = 0.0;
+let index = 1;
+let index_max = 20000;
+let cx = 0, cy = 0;
+let dx = 1, dy = 0;
+let segment_limit = 1;
+let segment_step = 0;
 
 // animation ticker
 app.ticker.add((delta) => {
@@ -66,30 +75,57 @@ app.ticker.add((delta) => {
   spiral.x = innerWidth/2;
   spiral.y = innerHeight/2;
 
+  while (index < index_max) {
+
+    cx += dx;
+    cy += dy;
+    segment_step++;
+
+    if (segment_step == segment_limit) {
+
+      if (dx == 0) {
+        segment_limit++;
+      }
+
+      var temp = dx;
+      dx = -dy;
+      dy = temp;
+
+      segment_step = 0;
+    }
+
+    index++
+
+    if (is_prime(index)) {
+      let prime_circle = new PIXI.Sprite(texture);
+      prime_circle.x = cx * unit_size;
+      prime_circle.y = cy * unit_size;
+      spiral.addChild(prime_circle);
+      break;
+    }
+
+  }
+
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-init_ui();
-  
+/**
+ * Initializes the UI
+ */
 function init_ui() {
-  $('#ui-window').draggable();
+  // ui window functionality
+  $('#ui-window').draggable({ 
+      containment: "#container", 
+      scroll: false,
+      stop: function(e, ui) { 
+        var percLeft = ui.position.left/ui.helper.parent().width()*100;
+        var percTop = ui.position.top/ui.helper.parent().height()*100;
+        ui.helper.css('left', percLeft + '%');      
+        ui.helper.css('top', percTop + '%');    
+        } })
+    .resizable({ 
+      aspectRatio: false
+  });
 
   // spiral type dropdown menu
   $('#spiral-dropdown').ddslick({
@@ -105,7 +141,8 @@ function init_ui() {
 }
 
 /**
- * Checks primality of given number.
+ * Checks primality of given number. Bases on the iterative modulus sieve
+ * with some optimizations. 
  */
 function is_prime(num){
 

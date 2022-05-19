@@ -30,7 +30,6 @@ canvas {
     top: 20px;
     right: 20px;
     z-index: 1;
-    font-size: small;
 }
 
 #ui-window > * {
@@ -39,6 +38,6 @@ canvas {
 }
 
 #zoom-slider {
-    width: 280px;
+    width: 100%;
     direction: rtl;
 }
