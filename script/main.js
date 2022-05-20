@@ -22,6 +22,10 @@ let ddData = [
   }
 ];
 
+const settings = {
+  
+}
+
 // constants
 let unit_size = 10;
 let unit_scale = 0.2;
@@ -67,7 +71,7 @@ app.stage.addChild(spiral);
 
 let elapsed = 0.0;
 let index = 1;
-let index_max = 20000;
+let index_max = 100000;
 
 let pos = { x: 0, y: 0 };
 let delta = { x: 1, y: 0 };
@@ -119,6 +123,10 @@ app.ticker.add( (dt) => {
 });
 
 
+
+
+
+
 /**
  * Initializes the UI
  */
@@ -132,36 +140,20 @@ function init_ui() {
         var percTop = ui.position.top/ui.helper.parent().height()*100;
         ui.helper.css('left', percLeft + '%');      
         ui.helper.css('top', percTop + '%');    
-        } })
-    .resizable({ 
-      aspectRatio: false
+      } 
   });
 
   // spiral type dropdown menu
   $('#spiral-dropdown').ddslick({
     data: ddData,
-    width: 280,
     imagePosition: "right",
+    width: 240,
     selectText: "Select your spiral type.",
     onSelected: function (data) {
         console.log(data);
     }
   });
-
-  // zoom slider and event
-  $('#zoom-slider').slider({
-    value: zoom_scale,
-    orientation: 'horizontal',
-    max: 2,
-    min: 0.1,
-    step: zoom_step,
-    range: 'min',
-    slide: (ev, ui) => {
-      spiral.scale.set(ui.value);
-      zoom_scale = ui.value;
-    }
-  });
-  
+  $('#spiral-dropdown')[0].style.width = '100%';
 
   // debounce resize event controller
   $(window).on('resize', (ev) => {
@@ -171,18 +163,45 @@ function init_ui() {
 
   // zoom event handler
   app.view.addEventListener('mousewheel', (ev) => {
-    if (ev.deltaY < 0) { 
-        zoom_scale += zoom_step;
-    }
-    else if (ev.deltaY > 0) { // scroll down
-      zoom_scale -= zoom_step;
-    }
+    zoom(ev.clientX, ev.clientY, ev.deltaY < 0);
+  });
+
+  // reset zoom button
+  $('#reset-btn').button().on('click', (ev) => {
+    ev.preventDefault();
+    zoom_scale = 1;
     spiral.scale.set(zoom_scale);
-    // update slider value
-    $('#zoom-slider').slider('value', zoom_scale);
+  });
+
+  // help button
+  $('#help-btn').button({
+    showLabel: false,
+    icon: "ui-icon-info"
   });
 
 }
+
+/**
+ * zoom control function
+ */
+function zoom(x, y, zoomin) {
+  let direction = zoomin ? 1 : -1;
+  var old_pos = {
+    x: (x - app.stage.x) / app.stage.scale.x,
+    y: (y - app.stage.y) / app.stage.scale.y
+  };
+  
+  zoom_scale *= 1 + direction * zoom_step;
+  var new_pos = {
+    x: (old_pos.x ) * zoom_scale + app.stage.x, 
+    y: (old_pos.y) * zoom_scale + app.stage.y
+  };
+
+  app.stage.x -= (new_pos.x-x);
+  app.stage.y -= (new_pos.y-y);
+  app.stage.scale.set(zoom_scale);
+}
+
 
 /**
  * resize event function
@@ -195,6 +214,7 @@ function resize() {
   spiral.x = innerWidth/2;
   spiral.y = innerHeight/2;
 }
+
 
 /**
  * Checks primality of given number. Bases on the iterative modulus sieve
