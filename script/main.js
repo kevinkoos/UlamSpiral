@@ -27,19 +27,23 @@ const settings = {
 }
 
 // constants
-let unit_size = 10;
+let unit_size = 5;
 let unit_scale = 0.2;
 let zoom_scale = 1;
 let zoom_step = 0.1;
+let mouse_pos = null;
+let delay = 100;
+let timeout = false;
 
 // start the app
 let app = new PIXI.Application({ 
   width: innerWidth, 
   height: innerHeight,
-  resizeTo: window        
+  resizeTo: window,
+  antialias: true,
 });
 $('#container')[0].appendChild(app.view);
-
+app.stage.interactive = true;
 
 // circle template to generate texture
 let gr = new PIXI.Graphics();  
@@ -79,8 +83,6 @@ let delta = { x: 1, y: 0 };
 let segment_limit = 1;
 let segment_step = 0;
 
-let delay = 100;
-let timeout = false;
 
 // start the ui
 init_ui();
@@ -161,16 +163,32 @@ function init_ui() {
     timeout = setTimeout(resize, delay);
   });
 
-  // zoom event handler
-  app.view.addEventListener('mousewheel', (ev) => {
-    zoom(ev.clientX, ev.clientY, ev.deltaY < 0);
+  // zoom and panning event
+  $(app.view)
+  .on('wheel', (ev) => {
+    zoom(ev.clientX, ev.clientY, ev.originalEvent.deltaY < 0);
+  })
+  .on('mousedown', (ev) => {
+    mouse_pos = {x: ev.offsetX, y: ev.offsetY};
+  })
+  .on('mouseup', (ev) => {
+    mouse_pos = null;
+  })
+  .on('mousemove', (ev) => {
+    if (mouse_pos) {
+      app.stage.x += (ev.offsetX - mouse_pos.x);
+      app.stage.y += (ev.offsetY - mouse_pos.y);
+      mouse_pos = { x: ev.offsetX, y: ev.offsetY };
+    }
   });
 
   // reset zoom button
   $('#reset-btn').button().on('click', (ev) => {
     ev.preventDefault();
     zoom_scale = 1;
-    spiral.scale.set(zoom_scale);
+    app.stage.x = 0;
+    app.stage.y = 0;
+    app.stage.scale.set(zoom_scale);
   });
 
   // help button
@@ -179,20 +197,21 @@ function init_ui() {
     icon: "ui-icon-info"
   });
 
+  $(app.view)
 }
 
 /**
  * zoom control function
  */
 function zoom(x, y, zoomin) {
-  let direction = zoomin ? 1 : -1;
-  var old_pos = {
+  const direction = zoomin ? 1 : -1;
+  const old_pos = {
     x: (x - app.stage.x) / app.stage.scale.x,
     y: (y - app.stage.y) / app.stage.scale.y
   };
   
   zoom_scale *= 1 + direction * zoom_step;
-  var new_pos = {
+  const new_pos = {
     x: (old_pos.x ) * zoom_scale + app.stage.x, 
     y: (old_pos.y) * zoom_scale + app.stage.y
   };
