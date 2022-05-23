@@ -72,13 +72,11 @@ circle.tint = 0x00ffff;
 spiral.addChild(circle);
 app.stage.addChild(spiral);
 
-
-let elapsed = 0.0;
 let index = 1;
 let index_max = 100000;
 
 let pos = { x: 0, y: 0 };
-let delta = { x: 1, y: 0 };
+let delta = { x: unit_size, y: 0 };
 
 let segment_limit = 1;
 let segment_step = 0;
@@ -89,7 +87,7 @@ init_ui();
 
 // animation ticker
 app.ticker.add( (dt) => {
-  elapsed += dt;
+  
   
   while (index < index_max) {
 
@@ -114,8 +112,8 @@ app.ticker.add( (dt) => {
 
     if (is_prime(index)) {
       let prime_circle = new PIXI.Sprite(texture);
-      prime_circle.x = pos.x * unit_size;
-      prime_circle.y = pos.y * unit_size;
+      prime_circle.x = pos.x;
+      prime_circle.y = pos.y;
       spiral.addChild(prime_circle);
       break;
     }
@@ -123,10 +121,6 @@ app.ticker.add( (dt) => {
   }
 
 });
-
-
-
-
 
 
 /**
