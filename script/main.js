@@ -2,7 +2,11 @@
  * @fileoverview Main file for controlling the ulam spiral visualization
  * @author Kevin Koos
  */
-let primes = [2, 3, 5, 7, 11, 13, 17, 19, 23];
+import { NUM_TYPE } from './integer.js';
+import Integer from './integer.js';
+import SpiralContainer from './spiralcontainer.js';
+import Discrete from './discrete.js';
+
 
 // data for dropdown menu
 let ddData = [
@@ -22,12 +26,7 @@ let ddData = [
   }
 ];
 
-const settings = {
-  
-}
-
 // constants
-let unit_size = 5;
 let unit_scale = 0.2;
 let zoom_scale = 1;
 let zoom_step = 0.1;
@@ -58,66 +57,51 @@ let texture = app.renderer.generateTexture(gr);
 texture.defaultAnchor.set(0.5); // center
 
 // container
-let spiral = new PIXI.Container();
-spiral.pivot.set(0.5);
-spiral.x = innerWidth / 2;
-spiral.y = innerHeight / 2;
-spiral.interactive = true;
-spiral.interactiveChildren = false;
+let spiral_container = new SpiralContainer(texture);
+let frame = spiral_container.collection;
+frame.pivot.set(0.5);
+frame.x = innerWidth / 2;
+frame.y = innerHeight / 2;
+frame.scale.y = -1;
+frame.interactive = true;
+frame.interactiveChildren = false;
 
 // center sample circle
 let circle = new PIXI.Sprite(texture);
 circle.tint = 0x00ffff;
 
-spiral.addChild(circle);
-app.stage.addChild(spiral);
+frame.addChild(circle);
+app.stage.addChild(frame);
 
-let index = 1;
-let index_max = 100000;
-
-let pos = { x: 0, y: 0 };
-let delta = { x: unit_size, y: 0 };
-
-let segment_limit = 1;
-let segment_step = 0;
-
+let index_max = 10000;
+let index = 0;
+let batch_size = 5;
+let i = 0;
 
 // start the ui
 init_ui();
 
+// start first spiral
+let spiral = new Discrete();
+
 // animation ticker
 app.ticker.add( (dt) => {
   
-  
-  while (index < index_max) {
+  if (index < index_max) {
 
-    pos.x += delta.x;
-    pos.y += delta.y;
-    segment_step++;
-
-    if (segment_step == segment_limit) {
-
-      if (delta.x == 0) {
-        segment_limit++;
-      }
-
-      var temp = delta.x;
-      delta.x = -delta.y;
-      delta.y = temp;
-
-      segment_step = 0;
+    while (i < batch_size) {
+      
+      let int = new Integer(spiral.next());
+      index = int.num;
+      
+      int.checkNumber();
+    
+      spiral_container.addNumber(int);
+    
+      i++
     }
-
-    index++
-
-    if (is_prime(index)) {
-      let prime_circle = new PIXI.Sprite(texture);
-      prime_circle.x = pos.x;
-      prime_circle.y = pos.y;
-      spiral.addChild(prime_circle);
-      break;
-    }
-
+    
+    i = 0;
   }
 
 });
@@ -226,28 +210,5 @@ function resize() {
   // center spiral container
   spiral.x = innerWidth/2;
   spiral.y = innerHeight/2;
-}
-
-
-/**
- * Checks primality of given number. Bases on the iterative modulus sieve
- * with some optimizations. 
- */
-function is_prime(num){
-
-  if (primes.includes(num)) { 
-    return true; 
-  }
-
-  for (var i = 0; i < primes.length; i++) {
-
-    if (num % primes[i] == 0) {
-      return false;
-    }
-
-  }
-
-  primes.push(num);
-  return true;
 }
 
