@@ -135,6 +135,21 @@ function init_ui() {
   });
   $('#spiral-dropdown')[0].style.width = '100%';
 
+  // reset zoom button
+  $('#reset-btn').button().on('click', (ev) => {
+    ev.preventDefault();
+    zoom_scale = 1;
+    app.stage.x = 0;
+    app.stage.y = 0;
+    app.stage.scale.set(zoom_scale);
+  });
+
+  // help button
+  $('#help-btn').button({
+    showLabel: false,
+    icon: "ui-icon-info"
+  });
+
   // debounce resize event controller
   $(window).on('resize', (ev) => {
     clearTimeout(timeout);
@@ -160,22 +175,6 @@ function init_ui() {
     }
   });
 
-  // reset zoom button
-  $('#reset-btn').button().on('click', (ev) => {
-    ev.preventDefault();
-    zoom_scale = 1;
-    app.stage.x = 0;
-    app.stage.y = 0;
-    app.stage.scale.set(zoom_scale);
-  });
-
-  // help button
-  $('#help-btn').button({
-    showLabel: false,
-    icon: "ui-icon-info"
-  });
-
-  $(app.view)
 }
 
 /**
@@ -208,7 +207,7 @@ function resize() {
   app.renderer.resize(innerWidth, innerHeight);
 
   // center spiral container
-  spiral.x = innerWidth/2;
-  spiral.y = innerHeight/2;
+  frame.x = innerWidth/2;
+  frame.y = innerHeight/2;
 }
 

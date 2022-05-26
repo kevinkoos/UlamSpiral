@@ -49,7 +49,7 @@ class SpiralContainer {
 
     }
 
-    
+
     // add a circle to indicated container
     addCircle(type, int) {
         let circle = new PIXI.Sprite(this.texture);
