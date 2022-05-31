@@ -4,7 +4,7 @@
  */
 import { NUM_TYPE } from './integer.js';
 import Integer from './integer.js';
-import SpiralContainer from './spiralcontainer.js';
+import SpiralContainer from './spiralContainer.js';
 import Discrete from './discrete.js';
 
 
@@ -15,14 +15,14 @@ let ddData = [
     value: 0,
     selected: true,
     description: "Discrete spiral on a grid.",
-    imageSrc: "discrete.svg"
+    imageSrc: "images/discrete.svg"
   },
   {
     text: "Archimedean",
     value: 1,
     selected: false,
     description: "Archimedean spiral.",
-    imageSrc: "archimedean.svg"
+    imageSrc: "images/archimedean.svg"
   }
 ];
 
@@ -147,7 +147,7 @@ function init_ui() {
   // help button
   $('#help-btn').button({
     showLabel: false,
-    icon: "ui-icon-info"
+    icon: "images/ui-icon-info"
   });
 
   // debounce resize event controller
