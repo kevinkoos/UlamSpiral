@@ -130,10 +130,19 @@ function init_ui() {
     width: 240,
     selectText: "Select your spiral type.",
     onSelected: function (data) {
-        console.log(data);
+        //console.log(data);
     }
   });
   $('#spiral-dropdown')[0].style.width = '100%';
+
+  $('#number-type').multiselect({
+    header: false,
+    selectedList: 4,
+    noneSelectedText: "Select a number type.",
+    click: (ev, ui) => {
+      spiral_container.toggleType(ui.value);
+    }
+  });
 
   // reset zoom button
   $('#reset-btn').button().on('click', (ev) => {
@@ -146,8 +155,8 @@ function init_ui() {
 
   // help button
   $('#help-btn').button({
-    showLabel: false,
-    icon: "images/ui-icon-info"
+    icon: "ui-icon-info",
+    showLabel: false
   });
 
   // debounce resize event controller
