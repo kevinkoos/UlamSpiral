@@ -67,3 +67,19 @@ canvas {
     position: relative;
     top: -7px;
 }
+
+#batch-container {
+    display: flex;
+    align-items: center;
+}
+
+#batch-container input {
+    width: 100px;
+    position: relative;
+    right: 0;
+}
+
+#batch-container label {
+    color: white;
+    padding-right: 10px;
+}

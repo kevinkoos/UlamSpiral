@@ -145,6 +145,21 @@ function init_ui() {
     showLabel: false
   });
 
+  // speed control
+  $('#batch-spinner').spinner({
+    min: 5,
+    max: 100,
+    spin: (ev, ui) => {
+      batch_size = ui.value;
+    }
+  }).on('wheel', (ev) => {
+    if (ev.originalEvent.deltaY < 0) {
+      $('#batch-spinner').spinner("stepUp");
+    } else {
+      $('#batch-spinner').spinner("stepDown");
+    }
+  });
+
   // debounce resize event controller
   $(window).on('resize', (ev) => {
     clearTimeout(timeout);
