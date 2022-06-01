@@ -7,25 +7,6 @@ import Integer from './integer.js';
 import SpiralContainer from './spiralContainer.js';
 import Discrete from './discrete.js';
 
-
-// data for dropdown menu
-let ddData = [
-  {
-    text: "Discrete",
-    value: 0,
-    selected: true,
-    description: "Discrete spiral on a grid.",
-    imageSrc: "images/discrete.svg"
-  },
-  {
-    text: "Archimedean",
-    value: 1,
-    selected: false,
-    description: "Archimedean spiral.",
-    imageSrc: "images/archimedean.svg"
-  }
-];
-
 // constants
 let unit_scale = 0.2;
 let zoom_scale = 1;
@@ -123,17 +104,22 @@ function init_ui() {
       } 
   });
 
-  // spiral type dropdown menu
-  $('#spiral-dropdown').ddslick({
-    data: ddData,
-    imagePosition: "right",
-    width: 240,
-    selectText: "Select your spiral type.",
-    onSelected: function (data) {
-        //console.log(data);
+  $('#spiral-dropdown').multiselect({
+    header: false,
+    selectedList: 1,
+    click: (ev, ui) => { // update icon in select menu bar
+      $('#spiral-icon').remove();
+      let icon = document.createElement('img');
+      icon.setAttribute('src', 'images/' + ui.value + '.svg');
+      icon.id = 'spiral-icon';
+      $('#spiral-dropdown_ms').prepend(icon);
     }
   });
-  $('#spiral-dropdown')[0].style.width = '100%';
+  let icon = document.createElement('img');
+  icon.setAttribute('src', 'images/discrete.svg');
+  icon.id = 'spiral-icon';
+  $('#spiral-dropdown_ms').prepend(icon);
+
 
   $('#number-type').multiselect({
     header: false,

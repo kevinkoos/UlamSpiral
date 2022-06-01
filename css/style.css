@@ -43,3 +43,27 @@ canvas {
     align-items: center;
     justify-content: center;
 }
+
+#spiral-dropdown_ms {
+    vertical-align: middle;
+}
+
+#spiral-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 3px;
+    position: relative;
+    top: 2px;
+}
+
+#spiral-dropdown_ms :nth-child(2) {
+    vertical-align: middle;
+    position: relative;
+    top: 11px;
+}
+
+#spiral-dropdown_ms :nth-child(3) {
+    vertical-align: middle;
+    position: relative;
+    top: -7px;
+}
