@@ -160,6 +160,13 @@ function init_ui() {
     }
   });
 
+  // increase max of generations
+  $('#inc-max-btn').button({
+    showLabel: false
+  }).on('click', (ev) => {
+    index_max += 10000;
+  });
+
   // debounce resize event controller
   $(window).on('resize', (ev) => {
     clearTimeout(timeout);
