@@ -30,18 +30,12 @@ canvas {
     top: 20px;
     right: 20px;
     z-index: 1;
+    border-radius: 20px;
 }
 
 #ui-window > * {
     margin: 0 auto;
     display: block;
-}
-
-#btn-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 #spiral-dropdown_ms {
@@ -83,3 +77,30 @@ canvas {
     color: white;
     padding-right: 10px;
 }
+
+.ui-icon-github { 
+    background-image: url(images/github.svg) !important; 
+}
+
+.ui-icon-wiki { 
+    background-image: url(images/wiki.svg) !important; 
+}
+
+#bottom-btns {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
+    width: 250px;
+}
+
+#reset-btn {
+    position: relative;
+    left: auto;
+    margin-right: 16px;
+}
+
+.ui-widget-content {
+    opacity: .70;
+}
+

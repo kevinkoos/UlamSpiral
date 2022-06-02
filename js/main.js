@@ -104,6 +104,13 @@ function init_ui() {
       } 
   });
 
+  $('#help-window').dialog({ 
+    dialogClass: 'help-window',
+    show: true,
+    autoOpen: false,
+    position: { my: 'top+50', at: 'top'}
+  });
+  
   $('#spiral-dropdown').multiselect({
     header: false,
     selectedList: 1,
@@ -143,6 +150,22 @@ function init_ui() {
   $('#help-btn').button({
     icon: "ui-icon-info",
     showLabel: false
+  }).on('click', (ev) => {
+    $('#help-window').dialog('open');
+  });
+
+  $('#github-btn').button({
+    icons: {primary: 'ui-icon-github', secondary: null},
+    showLabel: false
+  }).on('click', (ev) => {
+    window.open('https://github.com/kevinkoos/UlamSpiral', '_blank');
+  });
+
+  $('#wiki-btn').button({
+    icons: {primary: 'ui-icon-wiki', secondary: null},
+    showLabel: false
+  }).on('click', (ev) => {
+    window.open('https://en.wikipedia.org/wiki/Ulam_spiral', '_blank');
   });
 
   // speed control
