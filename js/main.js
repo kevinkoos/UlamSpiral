@@ -8,12 +8,16 @@ import SpiralContainer from './spiralContainer.js';
 import Discrete from './discrete.js';
 
 // constants
-let unit_scale = 0.2;
 let zoom_scale = 1;
 let zoom_step = 0.1;
 let mouse_pos = null;
 let delay = 100;
 let timeout = false;
+
+// spiral types
+let spirals = {
+  'discrete': Discrete
+}
 
 // start the app
 let app = new PIXI.Application({ 
@@ -29,8 +33,7 @@ app.stage.interactive = true;
 let gr = new PIXI.Graphics();  
 gr.beginFill(0xFFFFFF);
 gr.lineStyle(0);
-gr.drawCircle(0, 0, 25);
-gr.scale.set(0.4 * unit_scale);
+gr.drawCircle(0, 0, 2);
 gr.endFill();
 
 // generate texture from template graphics
@@ -45,7 +48,7 @@ frame.x = innerWidth / 2;
 frame.y = innerHeight / 2;
 frame.scale.y = -1;
 frame.interactive = true;
-frame.interactiveChildren = false;
+frame.interactiveChildren = true;
 
 // center sample circle
 let circle = new PIXI.Sprite(texture);
@@ -63,7 +66,7 @@ let i = 0;
 init_ui();
 
 // start first spiral
-let spiral = new Discrete();
+let spiral = new spirals['discrete']();
 
 // animation ticker
 app.ticker.add( (dt) => {
@@ -114,12 +117,20 @@ function init_ui() {
   $('#spiral-dropdown').multiselect({
     header: false,
     selectedList: 1,
-    click: (ev, ui) => { // update icon in select menu bar
+    click: (ev, ui) => { 
+      // update icon in select menu bar
       $('#spiral-icon').remove();
       let icon = document.createElement('img');
       icon.setAttribute('src', 'images/' + ui.value + '.svg');
       icon.id = 'spiral-icon';
       $('#spiral-dropdown_ms').prepend(icon);
+      // change spiral and reset values
+
+      
+
+
+
+
     }
   });
   let icon = document.createElement('img');
@@ -188,6 +199,7 @@ function init_ui() {
     showLabel: false
   }).on('click', (ev) => {
     index_max += 10000;
+    $('#total-value').html('N: ' + index_max);
   });
 
   // debounce resize event controller
@@ -214,6 +226,11 @@ function init_ui() {
       mouse_pos = { x: ev.offsetX, y: ev.offsetY };
     }
   });
+
+  // update numbers
+  $('#total-value').html('N: ' + index_max);
+
+
 
 }
 

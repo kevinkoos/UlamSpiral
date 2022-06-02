@@ -56,8 +56,15 @@ class SpiralContainer {
         circle.name = int.num;
         circle.x = int.x;
         circle.y = int.y;
+        circle.interactive = true;
+        circle.on('pointerover', SpiralContainer.hover);
 
         this.containers[type].addChild(circle);
+    }
+
+    // pointer hover event for spites
+    static hover() {
+        $('#current-value').html('Current: ' + this.name);
     }
 
 }

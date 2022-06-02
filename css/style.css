@@ -100,7 +100,18 @@ canvas {
     margin-right: 16px;
 }
 
-.ui-widget-content {
+.ui-dialog {
     opacity: .70;
 }
 
+#number-values {
+    position: relative;
+    display: flex;
+    color: white;
+    bottom: 0;
+}
+
+#total-value {
+    right: 0;
+    position: absolute;
+}
