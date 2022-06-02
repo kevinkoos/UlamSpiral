@@ -58,6 +58,10 @@ class Integer {
         let is_comp = false;
         let nfactors = 0;
         
+        if (num == 1) {
+            return [false, 0];
+        }
+
         if (Integer.primes.includes(num)) { 
             return [true, 0]; 
         }

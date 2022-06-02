@@ -9,6 +9,8 @@ class Discrete extends Spiral {
         super();
         this.segment_limit = 1;
         this.segment_step = 0;
+        this.delta = { x: this.unit_size, y: 0 };
+
     }
 
 
@@ -36,7 +38,6 @@ class Discrete extends Spiral {
         }
 
         this.index++;
-
         return [this.index, this.pos];
     }
     

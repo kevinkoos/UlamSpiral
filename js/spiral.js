@@ -1,7 +1,6 @@
 /**
  * Spiral class definition of the 
  */
-const unit_size = 5;
 
 class Spiral {
 
@@ -11,8 +10,8 @@ class Spiral {
      */
     constructor() {
         this.pos = { x: 0, y: 0 };
-        this.delta = { x: unit_size, y: 0 };
         this.index = 1;
+        this.unit_size = 5;
     }
 
     /**

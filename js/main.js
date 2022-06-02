@@ -6,6 +6,7 @@ import { NUM_TYPE } from './integer.js';
 import Integer from './integer.js';
 import SpiralContainer from './spiralContainer.js';
 import Discrete from './discrete.js';
+import Archimedes from './archimedes.js';
 
 // constants
 let zoom_scale = 1;
@@ -16,7 +17,8 @@ let timeout = false;
 
 // spiral types
 let spirals = {
-  'discrete': Discrete
+  'discrete': Discrete,
+  'archimedes': Archimedes
 }
 
 // start the app
@@ -77,7 +79,7 @@ app.ticker.add( (dt) => {
       
       let int = new Integer(spiral.next());
       index = int.num;
-      
+
       int.checkNumber();
     
       spiral_container.addNumber(int);
