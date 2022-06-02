@@ -31,26 +31,13 @@ let app = new PIXI.Application({
 $('#container')[0].appendChild(app.view);
 app.stage.interactive = true;
 
-// circle template to generate texture
-let gr = new PIXI.Graphics();  
-gr.beginFill(0xFFFFFF);
-gr.lineStyle(0);
-gr.drawCircle(0, 0, 2);
-gr.endFill();
-
 // generate texture from template graphics
-let texture = app.renderer.generateTexture(gr);
+let texture = app.renderer.generateTexture(generate_template());
 texture.defaultAnchor.set(0.5); // center
 
 // container
 let spiral_container = new SpiralContainer(texture);
-let frame = spiral_container.collection;
-frame.pivot.set(0.5);
-frame.x = innerWidth / 2;
-frame.y = innerHeight / 2;
-frame.scale.y = -1;
-frame.interactive = true;
-frame.interactiveChildren = true;
+let frame = init_frame(spiral_container);
 
 // center sample circle
 let circle = new PIXI.Sprite(texture);
@@ -72,7 +59,7 @@ let spiral = new spirals['discrete']();
 
 // animation ticker
 app.ticker.add( (dt) => {
-  
+
   if (index < index_max) {
 
     while (i < batch_size) {
@@ -126,12 +113,11 @@ function init_ui() {
       icon.setAttribute('src', 'images/' + ui.value + '.svg');
       icon.id = 'spiral-icon';
       $('#spiral-dropdown_ms').prepend(icon);
+
       // change spiral and reset values
-
-      
-
-
-
+      reset();      
+      console.log(ui.value);
+      spiral = new spirals[ui.value]();
 
     }
   });
@@ -230,11 +216,56 @@ function init_ui() {
   });
 
   // update numbers
-  $('#total-value').html('N: ' + index_max);
-
-
+  update_total();
 
 }
+
+
+/**
+ * updates the total number
+ */
+function update_total() {
+  $('#total-value').html('N: ' + index_max);
+}
+
+
+/**
+ * initialize frame
+ */
+function init_frame(container) {
+  let frame = spiral_container.collection;
+  frame.pivot.set(0.5);
+  frame.x = innerWidth / 2;
+  frame.y = innerHeight / 2;
+  frame.scale.y = -1;
+  frame.interactive = true;
+  frame.interactiveChildren = true;
+
+  return frame;
+}
+
+
+/**
+ * reset containers for changing spirals
+ */
+function reset() {
+  app.stage.removeChild(frame);
+  spiral_container = new SpiralContainer(texture);
+  frame = init_frame(spiral_container);
+  app.stage.addChild(frame);
+
+  // center sample circle
+  let circle = new PIXI.Sprite(texture);
+  circle.tint = 0x00ffff;
+
+  frame.addChild(circle);
+
+  index = 0;
+  i = 0;
+  index_max = 10000;
+  update_total();
+}
+
 
 /**
  * zoom control function
@@ -270,3 +301,17 @@ function resize() {
   frame.y = innerHeight/2;
 }
 
+
+/**
+ * generates the texture used for circles
+ */
+function generate_template() {
+  // circle template to generate texture
+  let gr = new PIXI.Graphics();  
+  gr.beginFill(0xFFFFFF);
+  gr.lineStyle(0);
+  gr.drawCircle(0, 0, 2);
+  gr.endFill();
+
+  return gr;
+}
