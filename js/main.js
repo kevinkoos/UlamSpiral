@@ -116,7 +116,6 @@ function init_ui() {
 
       // change spiral and reset values
       reset();      
-      console.log(ui.value);
       spiral = new spirals[ui.value]();
 
     }
@@ -264,6 +263,8 @@ function reset() {
   i = 0;
   index_max = 10000;
   update_total();
+
+  $('#number-type').multiselect('value', 'prime');
 }
 
 
