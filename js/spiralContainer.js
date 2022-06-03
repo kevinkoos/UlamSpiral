@@ -5,6 +5,16 @@
 import Integer from "./integer.js";
 import {NUM_TYPE} from "./integer.js";
 
+// color hex value based off the IBM color blind safe palette
+const color_tints = {
+    'prime': 0xffffff,
+    'composite': 0x785ef0,
+    'square': 0xdc267f,
+    'cube': 0xfe6100,
+    'triangular': 0xffb000,
+    'fibonacci': 0x648fff
+}
+
 class SpiralContainer {
 
     constructor(texture) {
@@ -16,17 +26,16 @@ class SpiralContainer {
             this.containers[NUM_TYPE[prop]] = new PIXI.Container();
             this.containers[NUM_TYPE[prop]].visible = false;
 
+            // color tint containers
+            let color_tint = new PIXI.filters.ColorMatrixFilter();
+            color_tint.tint(color_tints[NUM_TYPE[prop]]);
+            this.containers[NUM_TYPE[prop]].filters = [color_tint];
+        
             this.collection.addChild(this.containers[NUM_TYPE[prop]]);
         }
 
         // toggle primes spiral container to show
         this.containers[NUM_TYPE.PRIME].visible = true;
-    }
-
-
-    // return the graphics container
-    get container() {
-        return this.collection;
     }
 
 
@@ -61,6 +70,7 @@ class SpiralContainer {
 
         this.containers[type].addChild(circle);
     }
+
 
     // pointer hover event for spites
     static hover() {

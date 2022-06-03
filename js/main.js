@@ -230,7 +230,7 @@ function update_total() {
 
 
 /**
- * initialize frame
+ * initialize frame (container of all number types)
  */
 function init_frame(container) {
   let frame = spiral_container.collection;
