@@ -310,7 +310,7 @@ function generate_template() {
   let gr = new PIXI.Graphics();  
   gr.beginFill(0xFFFFFF);
   gr.lineStyle(0);
-  gr.drawCircle(0, 0, 2);
+  gr.drawCircle(0, 0, 2.5);
   gr.endFill();
 
   return gr;

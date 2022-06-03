@@ -11,7 +11,7 @@ class Spiral {
     constructor() {
         this.pos = { x: 0, y: 0 };
         this.index = 1;
-        this.unit_size = 5;
+        this.unit_size = 10;
     }
 
     /**

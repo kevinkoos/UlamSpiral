@@ -68,6 +68,11 @@ class SpiralContainer {
         circle.interactive = true;
         circle.on('pointerover', SpiralContainer.hover);
 
+        if (type == NUM_TYPE.COMPOSITE) {
+            circle.height = int.nfactors * 1.5;
+            circle.width = int.nfactors * 1.5;
+        }
+
         this.containers[type].addChild(circle);
     }
 
