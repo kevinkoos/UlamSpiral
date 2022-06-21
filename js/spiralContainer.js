@@ -13,7 +13,8 @@ const color_tints = {
     'cube': 0xfe6100,
     'triangular': 0xffb000,
     'fibonacci': 0x648fff,
-    'centerTriangular': 0xffffff
+    'centerTriangular': 0xffffff,
+    'pentagonal': 0xffffff
 }
 
 class SpiralContainer {

@@ -11,7 +11,8 @@ export const NUM_TYPE = {
     CUBE: 'cube',
     TRIANGULAR: 'triangular',
     FIBONACCI: 'fibonacci',
-    CTRIANGULAR: 'centerTriangular'
+    CTRIANGULAR: 'centerTriangular',
+    PENTAGONAL: 'pentagonal'
 };
 
 
@@ -121,9 +122,18 @@ class Integer {
 
     /**
      * Check is a number is a centered triangular number
+     * quadratic equation from generating function
      */
      static is_ctriangular(num) {
         let N = (-3 + Math.sqrt(24*num-15)) / 6;
+        return (Math.floor(N) == N);
+    }
+
+    /**
+     * Check is a number is a pentagonal number
+     */
+     static is_pentagonal(num) {
+        let N = (1 + Math.sqrt(24*num+1)) / 6;
         return (Math.floor(N) == N);
     }
     
@@ -135,7 +145,8 @@ const NUM_FUNC = {
     'cube': Integer.is_cube,
     'triangular': Integer.is_triangular,
     'fibonacci': Integer.is_fibonacci,
-    'centerTriangular': Integer.is_ctriangular
+    'centerTriangular': Integer.is_ctriangular,
+    'pentagonal': Integer.is_pentagonal
 }
 
 export default Integer;
