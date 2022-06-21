@@ -12,7 +12,8 @@ export const NUM_TYPE = {
     TRIANGULAR: 'triangular',
     FIBONACCI: 'fibonacci',
     CTRIANGULAR: 'centerTriangular',
-    PENTAGONAL: 'pentagonal'
+    PENTAGONAL: 'pentagonal',
+    CSQUARE: 'centerSquare'
 };
 
 
@@ -136,6 +137,14 @@ class Integer {
         let N = (1 + Math.sqrt(24*num+1)) / 6;
         return (Math.floor(N) == N);
     }
+
+    /**
+     * Check is a number is a pentagonal number
+     */
+     static is_csquare(num) {
+        let N = (2 + Math.sqrt(8*num-4)) / 4;
+        return (Math.floor(N) == N);
+    }
     
 }
 
@@ -146,7 +155,8 @@ const NUM_FUNC = {
     'triangular': Integer.is_triangular,
     'fibonacci': Integer.is_fibonacci,
     'centerTriangular': Integer.is_ctriangular,
-    'pentagonal': Integer.is_pentagonal
+    'pentagonal': Integer.is_pentagonal,
+    'centerSquare': Integer.is_csquare
 }
 
 export default Integer;
