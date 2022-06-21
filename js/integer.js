@@ -10,7 +10,8 @@ export const NUM_TYPE = {
     SQUARE: 'square',
     CUBE: 'cube',
     TRIANGULAR: 'triangular',
-    FIBONACCI: 'fibonacci'
+    FIBONACCI: 'fibonacci',
+    CTRIANGULAR: 'centerTriangular'
 };
 
 
@@ -51,8 +52,7 @@ class Integer {
     
     /**
      * Checks primality of given number. Bases on the iterative modulus sieve
-     * with some optimizations. 
-     * TODO: add in number of factors found, may extract method
+     * with some optimizations. Records number of unique factors
      */
     static is_prime(num) {
         let is_comp = false;
@@ -118,6 +118,14 @@ class Integer {
         return (Integer.is_square(5*num*num+4) ||
         Integer.is_square(5*num*num-4));
     }
+
+    /**
+     * Check is a number is a centered triangular number
+     */
+     static is_ctriangular(num) {
+        let N = (-3 + Math.sqrt(24*num-15)) / 6;
+        return (Math.floor(N) == N);
+    }
     
 }
 
@@ -126,7 +134,8 @@ const NUM_FUNC = {
     'square': Integer.is_square,
     'cube': Integer.is_cube,
     'triangular': Integer.is_triangular,
-    'fibonacci': Integer.is_fibonacci
+    'fibonacci': Integer.is_fibonacci,
+    'centerTriangular': Integer.is_ctriangular
 }
 
 export default Integer;

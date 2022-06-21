@@ -9,7 +9,7 @@ class Discrete extends Spiral {
         super();
         this.segment_limit = 1;
         this.segment_step = 0;
-        this.delta = { x: this.unit_size, y: 0 };
+        this.delta = { x: this.unit_size+3, y: 0 };
 
     }
 

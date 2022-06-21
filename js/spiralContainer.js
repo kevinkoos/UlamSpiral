@@ -12,7 +12,8 @@ const color_tints = {
     'square': 0xdc267f,
     'cube': 0xfe6100,
     'triangular': 0xffb000,
-    'fibonacci': 0x648fff
+    'fibonacci': 0x648fff,
+    'centerTriangular': 0xffffff
 }
 
 class SpiralContainer {
@@ -69,8 +70,8 @@ class SpiralContainer {
         circle.on('pointerover', SpiralContainer.hover);
 
         if (type == NUM_TYPE.COMPOSITE) {
-            circle.height = int.nfactors * 1.5;
-            circle.width = int.nfactors * 1.5;
+            circle.height = 1 + int.nfactors * 2;
+            circle.width = 1 + int.nfactors * 2;
         }
 
         this.containers[type].addChild(circle);
