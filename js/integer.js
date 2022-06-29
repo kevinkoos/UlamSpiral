@@ -13,7 +13,8 @@ export const NUM_TYPE = {
     FIBONACCI: 'fibonacci',
     CTRIANGULAR: 'centerTriangular',
     PENTAGONAL: 'pentagonal',
-    CSQUARE: 'centerSquare'
+    CSQUARE: 'centerSquare',
+    TETRAHEDRAL: 'tetrahedral'
 };
 
 
@@ -145,6 +146,19 @@ class Integer {
         let N = (2 + Math.sqrt(8*num-4)) / 4;
         return (Math.floor(N) == N);
     }
+
+    /**
+     * Check is a number is a tetrahedral number
+     */
+     static is_tetrahedral(num) {
+        let n = 0;
+        let tetra = 1;
+        do {
+            n++;
+            tetra = (n * (n+1) * (n+2)) / 6;
+        } while (tetra < num);
+        return tetra == num;
+    }
     
 }
 
@@ -156,7 +170,8 @@ const NUM_FUNC = {
     'fibonacci': Integer.is_fibonacci,
     'centerTriangular': Integer.is_ctriangular,
     'pentagonal': Integer.is_pentagonal,
-    'centerSquare': Integer.is_csquare
+    'centerSquare': Integer.is_csquare,
+    'tetrahedral': Integer.is_tetrahedral
 }
 
 export default Integer;
