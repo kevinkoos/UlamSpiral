@@ -7,6 +7,7 @@ import Integer from './integer.js';
 import SpiralContainer from './spiralContainer.js';
 import Discrete from './discrete.js';
 import Archimedes from './archimedes.js';
+import Vogel from './vogel.js';
 
 // constants
 let zoom_scale = 1;
@@ -18,7 +19,8 @@ let timeout = false;
 // spiral types
 let spirals = {
   'discrete': Discrete,
-  'archimedes': Archimedes
+  'archimedes': Archimedes,
+  'vogel': Vogel
 }
 
 // start the app
