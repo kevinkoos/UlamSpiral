@@ -8,6 +8,7 @@ import SpiralContainer from './spiralContainer.js';
 import Discrete from './discrete.js';
 import Archimedes from './archimedes.js';
 import Vogel from './vogel.js';
+import Hexagonol from './hexagonal.js';
 
 // constants
 let zoom_scale = 1;
@@ -20,7 +21,8 @@ let timeout = false;
 let spirals = {
   'discrete': Discrete,
   'archimedes': Archimedes,
-  'vogel': Vogel
+  'vogel': Vogel,
+  'hexagonal': Hexagonol
 }
 
 // start the app
@@ -62,10 +64,11 @@ let spiral = new spirals['discrete']();
 // animation ticker
 app.ticker.add( (dt) => {
 
-  if (index < index_max) {
+  i = 0;
+  while (i < batch_size) {
 
-    while (i < batch_size) {
-      
+    if (index < index_max) {
+    
       let int = new Integer(spiral.next());
       index = int.num;
 
@@ -73,10 +76,9 @@ app.ticker.add( (dt) => {
     
       spiral_container.addNumber(int);
     
-      i++
     }
-    
-    i = 0;
+        
+    i++;
   }
 
 });
