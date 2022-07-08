@@ -8,13 +8,12 @@ export const NUM_TYPE = {
     PRIME: 'prime',
     COMPOSITE: 'composite',
     SQUARE: 'square',
-    CUBE: 'cube',
     TRIANGULAR: 'triangular',
     FIBONACCI: 'fibonacci',
     CTRIANGULAR: 'centerTriangular',
     PENTAGONAL: 'pentagonal',
     CSQUARE: 'centerSquare',
-    TETRAHEDRAL: 'tetrahedral'
+    TWINPRIMES: 'twinPrime'
 };
 
 
@@ -92,17 +91,7 @@ class Integer {
         let rt = Math.floor(Math.sqrt(num))
         return (rt*rt == num);
     }
-    
-    
-    /**
-     * Check if a number is a perfect cube
-     */
-    static is_cube(num) {
-        let rt = Math.floor(Math.cbrt(num))
-        return (rt*rt*rt == num);
-    }
-
-    
+      
     /**
      * Check if a number is a triangular number
      * If n is the mth tri number n = m*(m+1)/2 so
@@ -111,8 +100,7 @@ class Integer {
     static is_triangular(num) {
         return Integer.is_square(8*num+1);
     }
-    
-    
+
     /**
      * Check is a number is a fibonacci number
      * based on Gessels test
@@ -148,16 +136,15 @@ class Integer {
     }
 
     /**
-     * Check is a number is a tetrahedral number
+     * Check if a number has a twin prime
      */
-     static is_tetrahedral(num) {
-        let n = 0;
-        let tetra = 1;
-        do {
-            n++;
-            tetra = (n * (n+1) * (n+2)) / 6;
-        } while (tetra < num);
-        return tetra == num;
+    static is_twinprime(num) {
+        if ((Integer.is_prime(num))[0]) {
+            if ((Integer.is_prime(num-2))[0] || (Integer.is_prime(num+2))[0]) {
+                return true;
+            }
+        }
+        return false;
     }
     
 }
@@ -165,13 +152,12 @@ class Integer {
 // map key values to corresponing functiuon
 const NUM_FUNC = {
     'square': Integer.is_square,
-    'cube': Integer.is_cube,
     'triangular': Integer.is_triangular,
     'fibonacci': Integer.is_fibonacci,
     'centerTriangular': Integer.is_ctriangular,
     'pentagonal': Integer.is_pentagonal,
     'centerSquare': Integer.is_csquare,
-    'tetrahedral': Integer.is_tetrahedral
+    'twinPrime': Integer.is_twinprime
 }
 
 export default Integer;
