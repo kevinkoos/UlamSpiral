@@ -40,6 +40,7 @@ canvas {
 #ui-window > * {
     margin: 0 auto;
     display: block;
+    margin-bottom: 17px;
 }
 
 #spiral-dropdown_ms {
@@ -104,8 +105,7 @@ canvas {
 #bottom-btns {
     position: absolute;
     bottom: 0;
-    right: 0;
-    padding: 15px;
+    right: 15px;
     width: 250px;
 }
 
