@@ -8,10 +8,10 @@ class Spiral {
      * pos: x and y positions
      * delta: x and y delta of next step
      */
-    constructor() {
+    constructor(size) {
         this.pos = { x: 0, y: 0 };
         this.index = 1;
-        this.unit_size = 10;
+        this.unit_size = size;
     }
 
     /**

@@ -66,9 +66,16 @@
 
       <br>
 
-      <div id="batch-container">
-        <label for="batch-spinner">Select Speed: </label>
-        <input id="batch-spinner" name="batch_size" value="5">
+      <div id="spinner-container">
+        <div id="batch-container">
+          <label for="batch-spinner">Select Speed: </label>
+          <input id="batch-spinner" name="batch_size" value="10">
+        </div>
+  
+        <div id="size-container" title="Spiral change required.">
+          <label for="size-spinner">Select Gap Size: </label>
+          <input id="size-spinner" name="size" value="10">
+        </div>
       </div>
 
       <br>
@@ -95,12 +102,14 @@
 
     <div id="help-window" title="Information">
       <p>
-        This is a visualizer of number spirals where certain types of numbers
-        are marked down at different positions depending on the spiral used.
+        This wensite is a tool for visualizing a few kinds of number spirals avaliable
+        from the UI window. Different types of numbers can be shown and highlighted to see
+        different structures in the spiral.
       </p>
       <p>
         Click and drag with the mouse, scrollwheel to zoom in and out. Use the UI
         window in the upper right corner to change settings with the spiral.
+        Hover over a dot to see what number it is.
       </p>
     </div>
    

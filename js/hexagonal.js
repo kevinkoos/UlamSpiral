@@ -5,8 +5,8 @@ import Spiral from './spiral.js';
 
 class Hexagonol extends Spiral {
 
-    constructor() {
-        super();
+    constructor(size) {
+        super(size);
         this.index = 1; // lets us draw the first dot (not in the center)
         this.pos.x = this.unit_size; // start #1 offset of center.
 

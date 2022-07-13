@@ -5,8 +5,8 @@
 
  class Archimedes extends Spiral {
 
-    constructor() {
-        super();
+    constructor(size) {
+        super(size);
         this.index = 0; // lets us draw the first dot (not in the center)
     }
 

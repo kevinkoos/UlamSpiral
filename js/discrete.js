@@ -5,8 +5,8 @@ import Spiral from './spiral.js';
 
 class Discrete extends Spiral {
 
-    constructor() {
-        super();
+    constructor(size) {
+        super(size);
         this.index = 1;
         this.segment_limit = 1;
         this.segment_step = 0;

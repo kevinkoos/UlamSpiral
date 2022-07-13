@@ -5,8 +5,8 @@
 
  class Vogel extends Spiral {
 
-    constructor() {
-        super();
+    constructor(size) {
+        super(size);
         this.index = 0; // lets us draw the first dot (not in the center)
         this.phi = (1 + Math.sqrt(5)) / 2; // golden ratio
         this.scale = this.unit_size - 3;

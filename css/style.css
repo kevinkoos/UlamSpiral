@@ -3,6 +3,10 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    line-height: 17px;
 }
 body {
     position: absolute;
@@ -26,7 +30,7 @@ canvas {
     position: absolute;
     padding: 20px;
     width: 240px;
-    height: 400px;
+    height: 280px;
     top: 20px;
     right: 20px;
     z-index: 1;
@@ -63,19 +67,30 @@ canvas {
 }
 
 #batch-container {
-    display: flex;
-    align-items: center;
+    display: block;
+    padding-left: 10px;
+    padding-right: 20px;
 }
 
 #batch-container input {
-    width: 100px;
-    position: relative;
-    right: 0;
+    width: 40px;
 }
 
 #batch-container label {
     color: white;
-    padding-right: 10px;
+}
+
+#size-container input {
+    width: 40px;
+    position: relative;
+}
+
+#size-container label {
+    color: white;
+}
+
+#spinner-container {
+    display: flex;
 }
 
 .ui-icon-github { 

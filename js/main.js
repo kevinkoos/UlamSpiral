@@ -16,6 +16,7 @@ let zoom_step = 0.1;
 let mouse_pos = null;
 let delay = 100;
 let timeout = false;
+let unit_size = 10;
 
 // spiral types
 let spirals = {
@@ -35,6 +36,8 @@ let app = new PIXI.Application({
 $('#container')[0].appendChild(app.view);
 app.stage.interactive = true;
 
+console.log(app.renderer.constructor.name);
+
 // generate texture from template graphics
 let texture = app.renderer.generateTexture(generate_template());
 texture.defaultAnchor.set(0.5); // center
@@ -52,14 +55,14 @@ app.stage.addChild(frame);
 
 let index_max = 10000;
 let index = 0;
-let batch_size = 5;
+let batch_size = 10;
 let i = 0;
 
 // start the ui
 init_ui();
 
 // start first spiral
-let spiral = new spirals['discrete']();
+let spiral = new spirals['discrete'](unit_size);
 
 // animation ticker
 app.ticker.add( (dt) => {
@@ -120,7 +123,7 @@ function init_ui() {
 
       // change spiral and reset values
       reset();      
-      spiral = new spirals[ui.value]();
+      spiral = new spirals[ui.value](unit_size);
 
     }
   });
@@ -184,6 +187,22 @@ function init_ui() {
       $('#batch-spinner').spinner("stepDown");
     }
   });
+
+  // gap control
+  $('#size-spinner').spinner({
+    min: 1,
+    max: 100,
+    spin: (ev, ui) => {
+      unit_size = ui.value;
+    }
+  }).on('wheel', (ev) => {
+    if (ev.originalEvent.deltaY < 0) {
+      $('#size-spinner').spinner("stepUp");
+    } else {
+      $('#size-spinner').spinner("stepDown");
+    }
+  });
+  $('#size-spinner').tooltip();
 
   // increase max of generations
   $('#inc-max-btn').button({
