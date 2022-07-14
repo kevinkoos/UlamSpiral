@@ -2,3 +2,4 @@ notes.txt
 jsconfig.json
 .vscode
 lib/*
+!lib/jquery.ui.touch-punch.js

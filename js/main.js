@@ -253,7 +253,9 @@ function init_ui() {
     $('#ui-window').css('display', 'block');
   });
 
-
+  $('.input').on('click', function(){
+    $(this).focus();
+  });
 
   // update numbers
   update_total();
