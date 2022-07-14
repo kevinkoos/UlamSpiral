@@ -130,3 +130,17 @@ canvas {
     right: 0;
     position: absolute;
 }
+
+#upper-btns {
+    position: absolute;
+    right: 25px;
+    top: 0px;
+}
+
+#container-btns {
+    position: absolute;
+    display: none;
+    right: 10px;
+    top: -10px;
+    z-index: 2;
+}

@@ -26,14 +26,24 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-multiselect-widget/3.0.1/jquery.multiselect.min.js" defer></script>
   <!-- <script src="lib/jquery.multiselect.js" defer></script> -->
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" defer></script>\
+
   <script type="module" src="js/main.js" defer></script>
 </head>
 
 <body>
 
   <div id="container">
+
+    <div id="container-btns">
+      <button id="show-btn"></button>
+    </div>
     
     <div id="ui-window" class="widget">
+
+      <div id="upper-btns">
+        <button id="hide-btn"></button>
+      </div>
       
       <select id="spiral-dropdown" name="spiral-dropdown">
         <option value="discrete" data-image-src="images/discrete.svg" selected="selected">

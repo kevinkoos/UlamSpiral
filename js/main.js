@@ -223,19 +223,37 @@ function init_ui() {
   .on('wheel', (ev) => {
     zoom(ev.clientX, ev.clientY, ev.originalEvent.deltaY < 0);
   })
-  .on('mousedown', (ev) => {
+  .on('pointerdown', (ev) => {
     mouse_pos = {x: ev.offsetX, y: ev.offsetY};
   })
-  .on('mouseup', (ev) => {
+  .on('pointerup', (ev) => {
     mouse_pos = null;
   })
-  .on('mousemove', (ev) => {
+  .on('pointermove', (ev) => {
     if (mouse_pos) {
       app.stage.x += (ev.offsetX - mouse_pos.x);
       app.stage.y += (ev.offsetY - mouse_pos.y);
       mouse_pos = { x: ev.offsetX, y: ev.offsetY };
     }
   });
+
+  // hide and show buttons
+  $('#hide-btn').button({
+    icon: "ui-icon-caret-1-n",
+    showLabel: false
+  }).on('click', (ev) => {
+    $('#ui-window').css('display', 'none');
+    $('#container-btns').css('display', 'block');
+  });
+  $('#show-btn').button({
+    icon: "ui-icon-caret-1-s",
+    showLabel: false
+  }).on('click', (ev) => {
+    $('#container-btns').css('display', 'none');
+    $('#ui-window').css('display', 'block');
+  });
+
+
 
   // update numbers
   update_total();
