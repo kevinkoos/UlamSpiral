@@ -11,11 +11,12 @@ import Vogel from './vogel.js';
 import Hexagonol from './hexagonal.js';
 
 // constants
+let wheel_step = 0.1;
+let touch_step = 0.01;
 let zoom_scale = 1;
-let zoom_step = 0.1;
-let mouse_pos = null;
+let touch_pos = null;
 let delay = 100;
-let timeout = false;
+let timeoutid = 0;
 let unit_size = 10;
 
 // spiral types
@@ -214,29 +215,33 @@ function init_ui() {
 
   // debounce resize event controller
   $(window).on('resize', (ev) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(resize, delay);
+    clearTimeout(timeoutid);
+    timeoutid = setTimeout(resize, delay);
   });
 
-  // zoom and panning event
-  $(app.view)
-  .on('wheel', (ev) => {
-    zoom(ev.clientX, ev.clientY, ev.originalEvent.deltaY < 0);
+  // zoom event for mouse wheel
+  $(app.view).on('wheel', (ev) => {
+    zoom(ev.clientX, ev.clientY, ev.originalEvent.deltaY < 0, wheel_step);
+  });
+
+  // pinch to zoom
+  let hammertime = new Hammer($('#container')[0]);
+  hammertime.get('pinch').set({ enable: true});
+  hammertime
+  .on('pinch', (ev) => {
+    zoom(ev.center.x, ev.center.y, ev.scale > 1, touch_step);
   })
-  .on('pointerdown', (ev) => {
-    mouse_pos = {x: ev.offsetX, y: ev.offsetY};
+  .on('panstart', (ev) => {
+    touch_pos = {x: ev.center.x, y: ev.center.y};
   })
-  .on('pointerup', (ev) => {
-    mouse_pos = null;
-  })
-  .on('pointermove', (ev) => {
-    if (mouse_pos) {
-      app.stage.x += (ev.offsetX - mouse_pos.x);
-      app.stage.y += (ev.offsetY - mouse_pos.y);
-      mouse_pos = { x: ev.offsetX, y: ev.offsetY };
+  .on('pan', (ev) => {
+    if (ev.maxPointers == 1) {
+      app.stage.x += (ev.center.x - touch_pos.x);
+      app.stage.y += (ev.center.y - touch_pos.y);
+      touch_pos = { x: ev.center.x, y: ev.center.y };
     }
   });
-
+  
   // hide and show buttons
   $('#hide-btn').button({
     icon: "ui-icon-caret-1-n",
@@ -253,9 +258,7 @@ function init_ui() {
     $('#ui-window').css('display', 'block');
   });
 
-  $('.input').on('click', function(){
-    $(this).focus();
-  });
+
 
   // update numbers
   update_total();
@@ -314,7 +317,7 @@ function reset() {
 /**
  * zoom control function
  */
-function zoom(x, y, zoomin) {
+function zoom(x, y, zoomin, zoom_step) {
   const direction = zoomin ? 1 : -1;
   const old_pos = {
     x: (x - app.stage.x) / app.stage.scale.x,

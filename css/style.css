@@ -144,3 +144,9 @@ canvas {
     top: 5px;
     z-index: 2;
 }
+
+@media all and (max-width: 600px) {
+    #ui-window {
+        height: 290px;
+    }
+}
