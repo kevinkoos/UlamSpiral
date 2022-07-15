@@ -70,6 +70,7 @@ class SpiralContainer {
         circle.y = int.y;
         circle.interactive = true;
         circle.on('pointerover', SpiralContainer.hover);
+        circle.on('tap', SpiralContainer.hover);
 
         if (type == NUM_TYPE.COMPOSITE) {
             circle.height = 1 + int.nfactors * 2;
